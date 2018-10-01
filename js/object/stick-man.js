@@ -9,12 +9,18 @@ export default class StickMan {
   }
 
   drawToCanvas(ctx) {
+    // this.usual(ctx)
+    // this.walk(ctx)
     if(this.state==1){
       this.usual(ctx)
       // this.state++
     }else if(this.state==2){
-      this.punch(ctx)
+      this.walk(ctx)
+    } 
+    else if (this.state == 3) {
+      
     }
+    
   }
   //通常情况
   usual(ctx){
@@ -33,10 +39,12 @@ export default class StickMan {
     ctx.moveTo(this.x, this.y + this.r); //脖子位置
     ctx.lineTo(this.x, this.y + this.r + this.r * 2); //身体
 
-    ctx.lineTo(this.x + this.r / 2 * 3, this.y + this.r * 2 + this.r * 3); //脚
+    ctx.lineTo(this.x + this.r , this.y + this.r + this.r * 3); //前脚
+    ctx.lineTo(this.x + this.r / 2, this.y + this.r * 2 + this.r * 3);
 
-    ctx.moveTo(this.x, this.y + this.r + this.r * 2); //脚
-    ctx.lineTo(this.x - this.r / 2 * 3, this.y + this.r * 2 + this.r * 3);
+    ctx.moveTo(this.x, this.y + this.r + this.r * 2); //后脚
+    ctx.lineTo(this.x, this.y + this.r + this.r * 3);
+    ctx.lineTo(this.x-this.r/2, this.y + this.r * 2 + this.r * 3);
 
     ctx.moveTo(this.x, this.y + this.r); //手
     ctx.lineTo(this.x + this.r / 4 * 3, this.y + this.r + this.r / 4 * 3);
@@ -74,6 +82,41 @@ export default class StickMan {
     ctx.moveTo(this.x, this.y + this.r); //手
     // ctx.lineTo(this.x + this.r / 4 * 3, this.y + this.r + this.r / 4 * 3);
     ctx.lineTo(this.x + this.r * 3, this.y + this.r);
+
+    ctx.moveTo(this.x, this.y + this.r); //手
+    ctx.lineTo(this.x - this.r, this.y + this.r + this.r / 2 * 3);
+    ctx.lineTo(this.x + this.r, this.y + this.r + this.r / 2 * 3);
+
+    ctx.stroke();
+
+  }
+
+  //走路
+  walk(ctx) {
+    ctx.beginPath()
+    ctx.fillStyle = 'rgba(255,255,255,1)'
+    ctx.strokeStyle = 'rgba(255,255,255,1)'
+    ctx.lineWidth = 5;
+    ctx.lineCap = "round"
+    ctx.lineJoin = "round";
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+    ctx.fill()
+
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y + this.r); //脖子位置
+    ctx.lineTo(this.x, this.y + this.r + this.r * 2); //身体
+
+    // ctx.lineTo(this.x + this.r / 2 * 3, this.y + this.r/2*2 + this.r * 3); //前脚
+    // ctx.lineTo(this.x + this.r / 2*2 , this.y + this.r/2*3 + this.r * 3);
+
+    // ctx.moveTo(this.x, this.y + this.r + this.r * 2); //后脚
+    ctx.lineTo(this.x, this.y + this.r * 2 + this.r * 3);
+
+    ctx.moveTo(this.x, this.y + this.r); //手
+    ctx.lineTo(this.x + this.r / 4 * 3, this.y + this.r + this.r / 4 * 3);
+    ctx.lineTo(this.x + this.r * 2, this.y + this.r + this.r / 4 * 3);
 
     ctx.moveTo(this.x, this.y + this.r); //手
     ctx.lineTo(this.x - this.r, this.y + this.r + this.r / 2 * 3);

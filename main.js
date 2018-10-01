@@ -39,8 +39,12 @@ export default class Main {
     databus.bullets.forEach((item) => {
       item.update()
     })
-    if(this.frame%20==0){
-      
+    if(this.frame%10==0){
+      if (this.stickMan.state == 1) {
+        this.stickMan.state = 2
+      } else if (this.stickMan.state == 2) {
+        this.stickMan.state = 1
+      }
     }
   }
 
