@@ -1,10 +1,11 @@
 import DataBus from '../util/databus'
 let databus = new DataBus()
 export default class StickMan {
-  constructor(x, y,r) {
+  constructor(x, y,r,color) {
     this.x = x //200
     this.y = y //200
     this.r = r //10
+    this.color=color
     this.state=1
   }
 
@@ -25,8 +26,8 @@ export default class StickMan {
   //通常情况
   usual(ctx){
     ctx.beginPath()
-    ctx.fillStyle = 'rgba(255,255,255,1)'
-    ctx.strokeStyle = 'rgba(255,255,255,1)'
+    ctx.fillStyle = this.color
+    ctx.strokeStyle = this.color
     ctx.lineWidth = 5;
     ctx.lineCap = "round"
     ctx.lineJoin = "round";
@@ -60,8 +61,8 @@ export default class StickMan {
   // 出拳
   punch(ctx) {
     ctx.beginPath()
-    ctx.fillStyle = 'rgba(255,255,255,1)'
-    ctx.strokeStyle = 'rgba(255,255,255,1)'
+    ctx.fillStyle = this.color
+    ctx.strokeStyle = this.color
     ctx.lineWidth = 5;
     ctx.lineCap = "round"
     ctx.lineJoin = "round";
@@ -94,8 +95,8 @@ export default class StickMan {
   //走路
   walk(ctx) {
     ctx.beginPath()
-    ctx.fillStyle = 'rgba(255,255,255,1)'
-    ctx.strokeStyle = 'rgba(255,255,255,1)'
+    ctx.fillStyle = this.color
+    ctx.strokeStyle = this.color
     ctx.lineWidth = 5;
     ctx.lineCap = "round"
     ctx.lineJoin = "round";

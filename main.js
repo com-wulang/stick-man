@@ -9,20 +9,21 @@ var ctx=context
 var x = 0,
   y = 0,
   xSmall = 0,
-  ySamll = 0,
+  ySmall = 0,
   xServer=0,
   yServer=0,
   xSmallServer=0,
   ySmallServer=0,
   r = 20,
   ifStickTouch = false,
-  playerSpeed = 2
+  playerSpeed = 2,
+  bigSmallD=0//遥感大小圆心的距离
 
 export default class Main {
   constructor() {
     this.frame = 0
     this.player = new Player(0, 0)
-    this.stickMan=new StickMan(200,200,10)
+    this.stickMan=new StickMan(200,200,10,'#000')
     this.bindLoop = this.loop.bind(this)
     // this.initEvent.bind(this)()
     this.initEvent()
@@ -30,11 +31,11 @@ export default class Main {
   }
 
   update() {
-    let d = Math.pow(xSmallServer - xServer, 2) + Math.pow(ySmallServer - yServer, 2)
-    d = Math.sqrt(d)
-    if (d != 0 && ifStickTouch) {
-      this.player.x = (xSmallServer - xServer) * playerSpeed / d + this.player.x
-      this.player.y = (ySmallServer - yServer) * playerSpeed / d + this.player.y
+    let d = Math.pow(xSmall - x, 2) + Math.pow(ySmall - y, 2)
+    bigSmallD = Math.sqrt(d)
+    if (bigSmallD != 0 && ifStickTouch) {
+      this.stickMan.x = (xSmall - x) * playerSpeed / bigSmallD + this.stickMan.x
+      this.stickMan.y = (ySmall - y) * playerSpeed / bigSmallD + this.stickMan.y
     }
     databus.bullets.forEach((item) => {
       item.update()
@@ -50,6 +51,9 @@ export default class Main {
 
   render() {
     context.clearRect(0, 0, canvas.width, canvas.height)
+    context.beginPath()
+    context.fillStyle = "#fff"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
     // this.player.drawToCanvas(context)
     databus.bullets.forEach((item)=>{
       item.drawToCanvas(context)
@@ -58,7 +62,11 @@ export default class Main {
       // 画操纵杆
       this.drawJoystick()
     }
-    this.stickMan.drawToCanvas(ctx)
+    if (bigSmallD != 0 && ifStickTouch) {
+      this.stickMan.drawToCanvas(ctx)
+    }else{
+      this.stickMan.usual(ctx)
+    }
   }
 
   loop() {
@@ -76,7 +84,7 @@ export default class Main {
     context.fill();
     //画小圆
     context.beginPath()
-    context.arc(xSmall, ySamll, r, 0, 2 * Math.PI);
+    context.arc(xSmall, ySmall, r, 0, 2 * Math.PI);
     context.fillStyle = 'rgba(0,0,255,1)'
     context.fill();
   }
@@ -96,14 +104,14 @@ export default class Main {
       y = e.touches[0].clientY
       if (x < canvas.width / 2) {
         xSmall = x
-        ySamll = y
+        ySmall = y
         ifStickTouch = true
         let msg = {
           ifStickTouch: true,
           x: x,
           y: y,
           xSmall: xSmall,
-          ySmall: ySamll
+          ySmall: ySmall
         }
         // wx.sendSocketMessage({ data: JSON.stringify(msg) })
         wx.onTouchMove(function (e1) {
@@ -113,16 +121,16 @@ export default class Main {
           if (distance > (4 * r * r)) {
             let position = Main.circleLineIntersect(x, y, 2 * r, xMove, yMove)
             xSmall = position.x
-            ySamll = position.y
+            ySmall = position.y
           } else {
             xSmall = xMove
-            ySamll = yMove
+            ySmall = yMove
           }
           let msg = {
             x: x,
             y: y,
             xSmall: xSmall,
-            ySmall: ySamll
+            ySmall: ySmall
           }
           // wx.sendSocketMessage({ data: JSON.stringify(msg) })
         })
